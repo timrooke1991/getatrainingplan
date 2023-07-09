@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+    <header>
+        <nav>
+            <div class="container">
+                <h1>
+                    <a href="/" class="logo">Get a Training Plan</a>
+                </h1>
+            </div>
+        </nav>
+    </header>
+    <section class="hero">
+        <div class="container">
+            <h1>Customized Training Plans for Athletes</h1>
+            <p>Get a personalized training plan to reach your running goals.</p>
+            <form action="#" method="post" class="signup-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input placeholder="2:30:00"
+                           type="text"
+                           name="target_time"
+                           placeholder="Target Time"
+                           required>
+                </div>
+                <div class="form-group">
+                    <select name="race_distance" required>
+                        <option value="">
+                            Select Race Distance
+                        </option>
+                        <option value="5km">
+                            5km
+                        </option>
+                        <option value="10km">
+                            10km
+                        </option>
+                        <option value="half-marathon">
+                            Half Marathon
+                        </option>
+                        <option value="marathon">
+                            Marathon
+                        </option>
+                    </select>
+                </div>
+                <button type="submit">Get My Training Plan</button>
+            </form>
+        </div>
+    </section>
+{% endblock %}

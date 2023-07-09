@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet"
+              href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        {% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mui/material@5.3.1/dist/umd/mui.min.css"> {% endcomment %}
+        <link href="{% static "css/base.css" %}" rel="stylesheet">
+        <title>Get a Training Plan</title>
+    </head>
+    <body>
+        {% comment %} {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li class="{{ message.tags }}">
+                        {{ message|safe }}
+                        <a href="#" class="close">x</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %} {% endcomment %}
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
+        <footer>
+            <div class="container">
+                <p>&copy; 2023 Get a Training Plan. All rights reserved.</p>
+            </div>
+        </footer>
+        {% comment %} <script src="https://cdn.jsdelivr.net/npm/react@17.0.2/umd/react.production.min.js"></script> {% endcomment %}
+        {% comment %} <script src="https://cdn.jsdelivr.net/npm/react-dom@17.0.2/umd/react-dom.production.min.js"></script> {% endcomment %}
+        {% comment %} <script src="https://cdn.jsdelivr.net/npm/@mui/system@5.3.1/dist/umd/mui.min.js"></script> {% endcomment %}
+        {% comment %} <script src="https://cdn.jsdelivr.net/npm/@mui/material@5.3.1/dist/umd/mui.min.js"></script> {% endcomment %}
+    </body>
+</html>
