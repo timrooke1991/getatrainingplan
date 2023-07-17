@@ -1,8 +1,14 @@
+import re
 import os
+import uuid
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template import Template, Context
 from .models import Template as PlanTemplate, Response
 from django.utils.safestring import mark_safe
+from django.template.loader import render_to_string
+
+import pdfkit
 
 import markdown
 import openai
@@ -14,11 +20,92 @@ model_version = "gpt-3.5-turbo-16k"
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-def get_system_message(race_type, parsed_target_time):
-    return f"You are advising a running coach working with an athlete, who is training for a { race_type }. They are training to complete the { race_type } in a time of { parsed_target_time }."
+# Regex patterns
+TIME_PATTERN = r"^([01]?[0-9]|2[0-3])(:[0-5][0-9]){1,2}$"
+EMAIL_PATTERN = r"^[\w\.-]+@[\w\.-]+\.\w+$"
+
+
+def validate_form(request):
+
+    # Get form data
+    age = request.POST.get("age")
+    gender = request.POST.get("gender")
+    experience = request.POST.get("experience")
+    email = request.POST.get("email")
+    event = request.POST.get("event")
+    target = request.POST.get("target")
+    pb = request.POST.get("pb")
+    length = request.POST.get("length")
+    frequency = request.POST.get("frequency")
+
+    # Validation
+    errors = {}
+
+    if not re.match(r"^\d+$", str(age)) or int(age) < 0:
+        errors["age"] = "Invalid age"
+
+    if gender not in ["male", "female", "non-binary", "prefer-not-to-say"]:
+        errors["gender"] = "Invalid gender"
+
+    if experience not in ["beginner", "intermediate", "advanced", "elite"]:
+        errors["experience"] = "Invalid experience"
+
+    if not re.match(EMAIL_PATTERN, email):
+        errors["email"] = "Invalid email"
+
+    if event not in ["marathon", "half-marathon", "10km", "5km"]:
+        errors["event"] = "Invalid event"
+
+    if not re.match(TIME_PATTERN, target):
+        errors["target"] = "Invalid target time"
+
+    if not re.match(TIME_PATTERN, pb):
+        errors["pb"] = "Invalid PB time"
+
+    if not re.match(r"^\d+$", str(length)) or int(length) < 1:
+        errors["length"] = "Invalid length"
+
+    if not re.match(r"^\d+$", str(frequency)) or int(frequency) < 1:
+        errors["frequency"] = "Invalid frequency"
+
+    if len(errors) > 0:
+        return {"status": "Error", "errors": errors}
+
+    return {
+        "status": "Success",
+        "data": {
+            "personal": {
+                "age": age,
+                "gender": gender,
+                "experience": experience,
+                "email": email,
+            },
+            "goal": {
+                "event": format_dash(event),
+                "target": target,
+                "pb": pb,
+            },
+            "training": {
+                "length": length,
+                "frequency": frequency,
+                "max_distance": get_max_distance(event),
+            },
+        },
+    }
+
+
+def get_system_message(data):
+    gender = (
+        ""
+        if data["personal"]["gender"] == "prefer-not-to-say"
+        else format_dash(data["personal"]["gender"])
+    )
+
+    return f'You are advising a running coach working with a {gender} athlete, who is training for a { data["goal"]["event"] }. They are training to complete the { data["goal"]["event"] } in a time of { data["goal"]["target"] }. They are an { data["personal"]["experience"]} runner who has a { data["goal"]["event"] } personal best time of { data["goal"]["pb"] }.'
 
 
 def send_to_chatgpt4(system_message, prompt_header, prompt_content):
+    print("Sending request to chatGPT")
     response = openai.ChatCompletion.create(
         model=model_version,
         messages=[
@@ -26,8 +113,8 @@ def send_to_chatgpt4(system_message, prompt_header, prompt_content):
             {"role": "user", "content": prompt_header},
             {"role": "user", "content": prompt_content},
         ],
-        temperature=0.4,
-        max_tokens=8000,
+        temperature=0.8,
+        max_tokens=7000,
     )
 
     print(response)
@@ -37,8 +124,8 @@ def send_to_chatgpt4(system_message, prompt_header, prompt_content):
     return generated_message
 
 
-def format_distance(race_distance):
-    return race_distance.replace("-", " ")
+def format_dash(text):
+    return text.replace("-", " ")
 
 
 def get_max_distance(race_distance):
@@ -52,91 +139,69 @@ def get_max_distance(race_distance):
         return "26.2"
 
 
-def format_time(hours_input=0, minutes_input=0):
-    hours = int(hours_input)
-    minutes = int(minutes_input)
-    if hours == 0 and minutes == 1:
-        return "1 minute"
-    elif hours == 1 and minutes == 0:
-        return "1 hour"
-    elif hours == 0:
-        return f"{minutes} minutes"
-    elif minutes == 0:
-        return f"{hours} hours"
-    else:
-        return f"{hours} hours {minutes} minutes"
-
-
 def index(request):
     if request.method == "POST":
-        email = request.POST.get("email")
-        target_time = request.POST.get("target_time")
-        race_distance = request.POST.get("race_distance")
 
-        print(" ------------------------ ")
-        print(target_time)
-        print(race_distance)
-        print(" ------------------------ ")
+        form_data = validate_form(request)
+        if form_data["status"] == "Success":
+            parsed_data = form_data["data"]
 
-        parsed_target_time = format_time(*target_time.split(":"))
-        max_distance = get_max_distance(race_distance)
-        parsed_race_distance = format_distance(race_distance)
+            # Fetch the template by its key
+            template = PlanTemplate.objects.get(key="run_plan")
 
-        # Fetch the template by its key
-        template = PlanTemplate.objects.get(key="run_plan")
+            # Get the latest TemplateVersion for the template
+            latest_version = template.versions.order_by("-id").first()
 
-        # Get the latest TemplateVersion for the template
-        latest_version = template.versions.order_by("-id").first()
+            if latest_version:
+                template_header = latest_version.header
+                # Create a Django template object from the template content
+                template_content = latest_version.content
+                prompt_header_temp = Template(template_header)
+                prompt_content_temp = Template(template_content)
 
-        if latest_version:
-            template_header = latest_version.header
-            # Create a Django template object from the template content
-            template_content = latest_version.content
-            prompt_header_temp = Template(template_header)
-            prompt_content_temp = Template(template_content)
+                # Render the template with user-submitted context data
+                context = Context({"data": parsed_data})
+                header_content = prompt_header_temp.render(context)
+                prompt_content = prompt_content_temp.render(context)
 
-            # Render the template with user-submitted context data
-            context = Context(
-                {
-                    "race_distance": parsed_race_distance,
-                    "target_time": parsed_target_time,
-                    "max_distance": max_distance,
-                }
-            )
-            header_content = prompt_header_temp.render(context)
-            prompt_content = prompt_content_temp.render(context)
+                # ai_response = send_to_chatgpt4(
+                #     system_message=get_system_message(parsed_data),
+                #     prompt_header=header_content,
+                #     prompt_content=prompt_content,
+                # )
 
-            print(get_system_message(parsed_race_distance, parsed_target_time))
-            print(header_content)
-            print(prompt_content)
+                # # Token encoding
+                # encoding = tiktoken.encoding_for_model("gpt-4")
+                # tokens = encoding.encode(ai_response)
 
-            response = send_to_chatgpt4(
-                system_message=get_system_message(
-                    parsed_race_distance, parsed_target_time
-                ),
-                prompt_header=header_content,
-                prompt_content=prompt_content,
-            )
+                # print("Storing response")
 
-            encoding = tiktoken.encoding_for_model("gpt-4")
-            tokens = encoding.encode(response)
+                # Response.objects.create(
+                #     request_system_message=get_system_message(parsed_data),
+                #     request_header=header_content,
+                #     request_content=prompt_content,
+                #     response=ai_response,
+                #     email=parsed_data["personal"]["email"],
+                #     template=template,
+                #     template_version=latest_version,
+                #     model=model,
+                #     model_version=model_version,
+                #     token_length=len(
+                #         tokens
+                #     ),  # Assuming token length is the number of words
+                # )
 
-            Response.objects.create(
-                response=response,
-                email=email,
-                template=template,
-                template_version=latest_version,
-                model=model,
-                model_version=model_version,
-                token_length=len(
-                    tokens
-                ),  # Assuming token length is the number of words
-            )
+                # html_content = markdown.markdown(response)
+                # safe_html_content = mark_safe(html_content)
+                html_content = render_to_string("pdf.html", {"data": parsed_data})
+                pdf = pdfkit.from_string(html_content, False)
 
-            html_content = markdown.markdown(response)
-            safe_html_content = mark_safe(html_content)
+                response = HttpResponse(pdf, content_type="application/pdf")
+                response[
+                    "Content-Disposition"
+                ] = f'attachment; filename="training_plan_{uuid.uuid4().hex}.pdf"'
 
-            return render(request, "plans/view.html", {"content": safe_html_content})
+                return response
 
     return render(request, "plans/index.html")
 

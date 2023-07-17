@@ -20,7 +20,11 @@ class TemplateVersionAdmin(admin.ModelAdmin):
     search_fields = ("template__name",)
 
     formfield_overrides = {
-        models.TextField: {"widget": AceWidget(mode="django", theme="monokai")}
+        models.TextField: {
+            "widget": AceWidget(
+                mode="django", theme="monokai", wordwrap=True, width="100%"
+            )
+        }
     }
 
     def save_model(self, request, obj, form, change):

@@ -1,165 +1,260 @@
-/* Reset CSS */
-body,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-ul,
-li,
-form,
-button,
-input,
-select {
-  margin: 0;
-  padding: 0;
+@import url("https://fonts.googleapis.com/css2?family=Circular:wght@400;500;700&display=swap");
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
-/* Global Styles */
+:root {
+  --split-left: #fae9b8;
+  --split-right: #212022;
+  --primary-color: #fff;
+}
+
 body {
-  font-family: "Roboto", sans-serif;
-  background-color: #f5f5f5;
+  font-family: "Circular", sans-serif;
   margin: 0;
-  padding: 0;
-  background-image: url("/static/images/background.png");
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  flex-direction: column;
   min-height: 100vh;
+  font-weight: bold;
+  font-size: 1em;
+  color: var(--primary-color);
 }
 
-#content {
+.width-50 {
+  width: 50%;
+}
+
+img {
+  max-width: 100%;
+}
+
+.home-logo__img {
+  height: 186px;
+}
+
+.shadow-md {
+  box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+/** Home main Section*/
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.home-main {
+  display: flex;
+}
+
+.home-main__split--left {
+  width: 50%;
+}
+
+.home-main__split--right {
+  width: 50%;
+}
+
+.home-main__split {
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  flex: auto;
 }
 
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 0 15px;
+.home-main__split--left {
+  background: url("/static/images/home.png") var(--split-left) no-repeat center /
+    cover;
+  justify-content: flex-end;
 }
 
-.hero {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
+.home-main__small-text {
+  color: #000;
+  text-transform: uppercase;
+  font-size: 0.85em;
+  position: absolute;
+  bottom: 30%;
+  left: 8%;
+  transform: rotate(-90deg);
+}
+.home-main__small-text::before {
+  content: "";
+  position: absolute;
+  border: 1px solid #000;
+  width: 40px;
+  top: 9px;
+  left: -50%;
+}
+
+.home-main__split--right {
+  background-color: var(--split-right);
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  padding: 100px 0;
-  text-align: center;
 }
 
-.hero .container {
-  background: rgba(255, 255, 255, 0.6);
-  padding: 25px;
-  border-radius: 5px;
+.home-main__title,
+.home-main__description {
+  margin: 0;
 }
 
-header {
-  background-color: #333;
-  padding: 15px 0;
+span.underline {
+  display: inline-flex;
+  margin-bottom: 3px;
 }
 
-nav {
+.underline.blue {
+  border-bottom: 2px solid #046bc5;
+}
+
+.underline.red {
+  border-bottom: 2px solid #f84434;
+}
+
+.underline.yellow {
+  border-bottom: 2px solid #ffb00d;
+}
+
+.home-main__middle {
+  position: absolute;
+  width: 100px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.home-main__img {
+  filter: drop-shadow(15px 10px 50px #000);
+  /* h-shadow v-shadow blur(desenfoque) color */
+}
+
+form {
+  width: 80%;
+}
+
+.form-section {
+  padding: 10px 0;
+  margin-bottom: 20px;
+}
+
+.form-combined-section {
   display: flex;
-  align-items: center;
   justify-content: space-between;
 }
 
-.logo {
-  color: #fff;
-  font-size: 24px;
-  text-decoration: none;
-}
-
-.menu li {
-  display: inline-block;
-  margin-left: 15px;
-}
-
-.menu li a {
-  color: #fff;
-  text-decoration: none;
-}
-
-.hero {
-  padding: 100px 0;
-  text-align: center;
-}
-
-.hero h1 {
-  font-size: 36px;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.hero p {
-  font-size: 18px;
-  margin-bottom: 40px;
-  color: #555;
-}
-
-.signup-form {
+.form-section.goal,
+.form-section.training,
+.form-section.personal {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 500px;
-  margin: 0 auto;
+  flex-direction: column;
+  margin: 0 16px;
+  width: 100%;
 }
 
-.form-group {
-  width: 100%;
-  margin-bottom: 15px;
+.form-section h3 {
+  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 10px;
 }
 
-.form-group input,
-.form-group select {
-  width: 100%;
-  height: 40px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  font-size: 16px;
+.personal h3 {
+  color: #046bc5;
 }
 
-.signup-form button {
-  width: 100%;
-  height: 40px;
-  background-color: #03d1b2;
-  color: #fff;
+.goal h3 {
+  color: #f84434;
+}
+
+.training h3 {
+  color: #ffb00d;
+}
+
+input,
+select {
+  padding: 4px 0;
+  margin: 5px 0 8px;
+}
+
+input::placeholder,
+select::placeholder {
+  color: #999;
+  opacity: 1;
+}
+
+label.muted {
+  font-weight: 400;
+  color: #9f9f9f;
+  padding-top: 5px;
+  font-size: 11px;
+}
+
+input,
+select {
   border: none;
-  border-radius: 5px;
+  outline: none;
+  background-color: transparent;
+  border-bottom: 1px solid #535353;
+  color: #fff;
   font-size: 16px;
+  width: 100%;
+  box-shadow: inset 0px 0px 0px 0px red;
+}
+
+select {
+  color: #999;
+}
+
+input:focus,
+select:focus,
+input:valid {
+  color: #fff;
+  border-bottom: 1px solid #535353;
+}
+
+.personal input:focus,
+.personal select:focus,
+.personal input:valid,
+.personal select:valid {
+  color: #fff;
+  border-bottom: 1px solid #046bc5;
+}
+
+.goal input:focus,
+.goal select:focus,
+.goal input:valid,
+.goal select:valid {
+  color: #fff;
+  border-bottom: 1px solid #f84434;
+}
+
+.training input:focus,
+.training select:focus,
+.training input:valid,
+.training select:valid {
+  color: #fff;
+  border-bottom: 1px solid #ffb00d;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+button {
+  background-color: #fff;
+  color: #191414;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 500px;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
   cursor: pointer;
 }
 
-footer {
-  background-color: #333;
-  color: #fff;
-  padding: 15px 0;
-  text-align: center;
-}
-
-@media screen and (max-width: 768px) {
-  .container {
-    padding: 0 20px;
-  }
-
-  .menu li {
-    display: block;
-    margin: 10px 0;
-  }
-
-  .hero h1 {
-    font-size: 28px;
-  }
-
-  .hero p {
-    font-size: 16px;
-  }
+button:hover {
+  background-color: #ddd;
 }

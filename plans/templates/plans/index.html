@@ -1,50 +1,140 @@
 {% extends "base.html" %}
 {% block content %}
-    <header>
-        <nav>
-            <div class="container">
-                <h1>
-                    <a href="/" class="logo">Get a Training Plan</a>
+    <section class="home-main">
+        <div class="home-main__split home-main__split--left"></div>
+        <div class="home-main__split home-main__split--right shadow-md">
+            <div class="header">
+                <img src="/static/images/logo.png" alt="Logo" class="home-logo__img" />
+                <h1 class="home-main__title">
+                    <span class="underline blue">Get a</span>
+                    <br/>
+                    <span class="underline red">Training</span>
+                    <br/>
+                    <span class="underline yellow">Plan</span>
                 </h1>
             </div>
-        </nav>
-    </header>
-    <section class="hero">
-        <div class="container">
-            <h1>Customized Training Plans for Athletes</h1>
-            <p>Get a personalized training plan to reach your running goals.</p>
-            <form action="#" method="post" class="signup-form">
+            <form action="#" method="post">
                 {% csrf_token %}
-                <div class="form-group">
-                    <input type="email" name="email" placeholder="Email" required>
+                <div class="form-section personal">
+                    <h3>Personal</h3>
+                    <div class="row">
+                        <label class="muted">Age</label>
+                        <input type="number"
+                               min="0"
+                               max="100"
+                               id="age"
+                               name="age"
+                               placeholder="35"
+                               required>
+                        <label class="muted width-50" for="gender">Gender</label>
+                        <label class="muted width-50" for="experience">Experience</label>
+                        <select id="gender"
+                                class="width-50"
+                                name="gender"
+                                placeholder="Gender"
+                                required>
+                            <option value="" disabled selected>
+                                Select gender
+                            </option>
+                            <option value="male">
+                                Male
+                            </option>
+                            <option value="female">
+                                Female
+                            </option>
+                            <option value="non-binary">
+                                Non-binary
+                            </option>
+                            <option value="prefer-not-to-say">
+                                Prefer not to say
+                            </option>
+                        </select>
+                        <select id="experience"
+                                class="width-50"
+                                name="experience"
+                                placeholder="experience"
+                                required>
+                            <option value="" disabled selected>
+                                Select experience
+                            </option>
+                            <option value="beginner">
+                                Beginner
+                            </option>
+                            <option value="intermediate">
+                                Intermediate
+                            </option>
+                            <option value="advanced">
+                                Advanced
+                            </option>
+                            <option value="elite">
+                                Elite
+                            </option>
+                        </select>
+                    </div>
+                    <div class="row">
+                        <label class="muted">Email</label>
+                        <input type="email"
+                               id="email"
+                               name="email"
+                               placeholder="you@example.com"
+                               required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input placeholder="2:30:00"
-                           type="text"
-                           name="target_time"
-                           placeholder="Target Time"
-                           required>
+                <div class="form-combined-section">
+                    <div class="form-section goal">
+                        <h3>Goal</h3>
+                        <label class="muted">Event</label>
+                        <select id="event" name="event" placeholder="Event" required>
+                            <option value="" disabled selected>
+                                Select event
+                            </option>
+                            <option value="marathon">
+                                Marathon
+                            </option>
+                            <option value="half-marathon">
+                                Half marathon
+                            </option>
+                            <option value="10km">
+                                10km
+                            </option>
+                            <option value="5km">
+                                5km
+                            </option>
+                        </select>
+                        <label class="muted">Target Time (hh:mm:ss)</label>
+                        <input type="text"
+                               id="target"
+                               name="target"
+                               placeholder="2:45:15"
+                               pattern="^([01]?[0-9]|2[0-3])(:[0-5][0-9]){1,2}$"
+                               required>
+                        <label class="muted">PB (hh:mm:ss)</label>
+                        <input type="text"
+                               id="pb"
+                               name="pb"
+                               placeholder="3:25:47"
+                               pattern="^([01]?[0-9]|2[0-3])(:[0-5][0-9]){1,2}$"
+                               required>
+                    </div>
+                    <div class="form-section training">
+                        <h3>Plan</h3>
+                        <label class="muted">Length (weeks)</label>
+                        <input type="number"
+                               min="0"
+                               id="length"
+                               name="length"
+                               placeholder="12"
+                               required>
+                        <label class="muted">Sessions a week (approx.)</label>
+                        <input type="number"
+                               min="0"
+                               id="frequency"
+                               name="frequency"
+                               placeholder="4"
+                               required>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <select name="race_distance" required>
-                        <option value="">
-                            Select Race Distance
-                        </option>
-                        <option value="5km">
-                            5km
-                        </option>
-                        <option value="10km">
-                            10km
-                        </option>
-                        <option value="half-marathon">
-                            Half Marathon
-                        </option>
-                        <option value="marathon">
-                            Marathon
-                        </option>
-                    </select>
-                </div>
-                <button type="submit">Get My Training Plan</button>
+                <button type="submit">Get Plan</button>
             </form>
         </div>
     </section>

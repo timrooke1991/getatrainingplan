@@ -22,7 +22,7 @@ class TemplateVersion(models.Model):
     template = models.ForeignKey(
         Template, on_delete=models.CASCADE, related_name="versions"
     )
-    header = models.TextField(max_length=800)
+    header = models.TextField()
     content = models.TextField()
     token_length = models.PositiveIntegerField(null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
@@ -43,6 +43,9 @@ class TemplateVersion(models.Model):
 
 
 class Response(models.Model):
+    request_system_message = models.TextField(null=True, blank=True)
+    request_header = models.TextField(null=True, blank=True)
+    request_content = models.TextField(null=True, blank=True)
     response = models.TextField()
     email = models.EmailField(max_length=255, null=True, blank=True)
     model = models.CharField(max_length=30, null=True, blank=True)
