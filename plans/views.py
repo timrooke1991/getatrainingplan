@@ -7,6 +7,7 @@ from django.template import Template, Context
 from .models import Template as PlanTemplate, Response
 from django.utils.safestring import mark_safe
 from django.template.loader import render_to_string
+from django.conf import settings
 
 import pdfkit
 
@@ -210,4 +211,20 @@ def response_detail(request, id):
     item = get_object_or_404(Response, id=id)
     html_content = markdown.markdown(item.response)
     safe_html_content = mark_safe(html_content)
-    return render(request, "plans/view.html", {"content": safe_html_content})
+
+    if request.GET.get("html"):
+        return render(request, "pdf.html", {"data": safe_html_content})
+
+    pdf_content = render_to_string("pdf.html", {"data": safe_html_content})
+    pdf = pdfkit.from_string(
+        pdf_content,
+        False,
+        {"page-size": "A4", "orientation": "Landscape"},
+    )
+
+    response = HttpResponse(pdf, content_type="application/pdf")
+    response[
+        "Content-Disposition"
+    ] = f'attachment; filename="training_plan_{uuid.uuid4().hex}.pdf"'
+
+    return response

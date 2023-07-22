@@ -1,49 +1,278 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
         <title>Marathon Training Plan</title>
-        <style>
-            body {
-            font-family: Arial, sans-serif;
-            font-size: 12px;  
-            }
-            
-            h1, h2, h3 {
-            text-align: center; 
-            }
-            
-            .section {
-            padding: 10px;
-            page-break-before: always; 
-            }
-        </style>
+        <link href="https://fonts.googleapis.com/css?family=Ubuntu"
+              rel="stylesheet">
+        <link href="{% static "css/pdf.css" %}" rel="stylesheet">
     </head>
     <body>
-        <div class="section">
-            <h1>MARATHON TRAINING PLAN</h1>
-            <h2>15 WEEKS</h2>
-            <h3>LEVEL 5 / ADVANCED PLUS</h3>
-            <p>
-                Welcome to the community and well done on taking that first step to becoming a better, faster and stronger runner! We're here to help you with your journey to get you where you want to be.
-            </p>
-            <p>
-                By downloading this plan you agree to the terms and conditions which can be found on www.example.com/pages/terms-and-conditions. Please ensure you have read these fully before starting this plan.
-            </p>
-        </div>
-        <div class="section">
-            <h2>GLOSSARY</h2>
-            <h3>PACES</h3>
-            <p>Refer to the pace chart for suggested paces for your goal.</p>
-            <p>
-                <strong>Easy Pace</strong>
-            </p>
-            <p>You should feel like you could easily hold a conversation with someone at this pace.</p>
-            <p>
-                <strong>Marathon Pace</strong>
-            </p>
-            <p>
-                It’s important to practice what your goal race pace feels like so by the time race day rolls around it will be second nature!
-            </p>
-        </div>
+        <section class="section">
+            <div class="panel__split panel__split--light home-img"></div>
+            <div class="panel__split panel__split--dark shadow-md panel__align-center panel__vertical-center ">
+                <div class="header">
+                    <img src="/static/images/logo.png" alt="Logo" class="logo__img"/>
+                    <h1 class="home-main__title">
+                        <span class="underline blue">Get a</span>
+                        <span class="underline red">Training</span>
+                        <span class="underline yellow">Plan</span>
+                    </h1>
+                </div>
+                <div class="white-block">
+                    <h2>MARATHON TRAINING PLAN</h2>
+                </div>
+                <div class="white-block">
+                    <h2>15 WEEKS</h2>
+                </div>
+                <div class="white-block">
+                    <h2>ADVANCED</h2>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="panel__split panel__split--dark panel__text">
+                <div class="white-block">
+                    <h1>WELCOME TO YOUR PLAN 👋</h1>
+                </div>
+                <p>I'm so excited you've decided to take control of your fitness journey and reach your goals.</p>
+                <p>
+                    This journey may not always be easy, but trust the process. Embrace the small wins each day that will stack up to big results over time. And don't forget, progress is not linear. Some days will feel harder than others. Listen to your body, be kind to yourself, and keep your eyes on the prize.
+                </p>
+                <p>Stay positive. Work hard. Achieve greatness!</p>
+                <h3 class="">
+                    <span class="underline blue">Get a</span>
+                    <span class="underline red">Training</span>
+                    <span class="underline yellow">Plan</span>
+                </h1>
+            </div>
+            <div class="panel__split panel__split--light shadow-md welcome-img"></div>
+        </section>
+        <section class="section">
+            <div class="panel__split panel__split--light principles-img"></div>
+            <div class="panel__split panel__split--light panel__text shadow-md">
+                <h1 class="underline blue dark-text">TRAINING PRINCIPLES 💪</h1>
+                <p>
+                    I'm so pumped you've decided to take on the mighty marathon. I know the distance seems daunting now, but with smart training and determination, you've so got this!
+                </p>
+                <ul>
+                    <li>
+                        <span class="dark-text underline blue">Base Building:</span>
+                        <br>
+                        Establish a solid aerobic base with enough weekly mileage at an easy pace. This builds endurance and prepares the body for harder training. Start with around 40% of peak weekly volume.
+                    </li>
+                    <li>
+                        <span class="dark-text underline red">Long Runs</span>
+                        <br>
+                        Do a weekly long run starting around 10 miles building up to 20+ miles. Long runs build endurance and mentally prepare for the marathon distance.
+                    </li>
+                    <li>
+                        <span class="dark-text underline yellow">Speedwork</span>
+                        <br>
+                        Incorporate tempo runs, intervals, fartleks. These help improve lactate threshold, running economy and speed. Include 1-2 speed sessions per week.
+                    </li>
+                    <li>
+                        <span class="dark-text underline blue">Recovery</span>
+                        <br>
+                        Have easy run days and complete rest days. These allow the body to adapt to training and prevent injury and burnout. Reduce mileage every 4 weeks.
+                    </li>
+                    <li>
+                        <span class="dark-text underline red">Progression</span>
+                        <br>
+                        Gradually increase total weekly mileage by around 10% each week, up to a peak of 40-50 mpw. Increase long run by 1-2 miles each week.
+                    </li>
+                    <li>
+                        <span class="dark-text underline yellow">Specificity</span>
+                        <br>
+                        Include marathon pace runs. Run portions of long runs at goal marathon pace. Practice race day fueling and gear. Mimic race day conditions.
+                    </li>
+                    <li>
+                        <span class="dark-text underline blue">Taper</span>
+                        <br>
+                        Reduce volume by 25-50% over 2-3 weeks pre-race while maintaining intensity. Allows legs to feel fresh and rested for race day.
+                    </li>
+                    <li>
+                        <span class="dark-text underline red">Periodization</span>
+                        <br>
+                        Vary training in cycles by adjusting volume, intensity and recovery. Cycle between hard and easy weeks.
+                    </li>
+                    <li>
+                        <span class="dark-text underline yellow">Strength Training</span>
+                        <br>
+                        1-2 times per week for injury prevention and running efficiency. Focus on core, hips, glutes and legs.
+                    </li>
+                    <li>
+                        <span class="dark-text underline blue">Stretching</span>
+                        <br>
+                        Stretch regularly post-run to increase flexibility and prevent injury. Focus on major running muscle groups.
+                    </li>
+                    <li>
+                        <span class="dark-text underline red">Nutrition</span>
+                        <br>
+                        Eat a balanced diet high in complex carbs, lean protein and healthy fats. Hydrate well before, during and after runs.
+                    </li>
+                </ul>
+            </div>
+        </section>
+        <section class="section">
+            <div class="panel__split panel__split--light panel__text shadow-md">
+                <h1 class="underline blue dark-text">
+                    SESSIONS
+                </h1>
+                <p>
+                    Varied paced runs make training more comprehensive, adaptive, safe and tailored to the specific demands of marathon racing. Following a plan with purposeful variety is key to being successful over any distance.
+                </p>
+                <ul>
+                    <li>
+                        <span class="dark-text underline blue">Intervals</span>
+                        <br>
+                        Intervals involve repeating shorter, faster runs with recovery periods in between. Intervals help improve speed and lactate threshold. A sample interval workout may be 6x800m at 5K pace with 400m recovery jog.
+                    </li>
+                    <li>
+                        <span class="dark-text underline red">Fartlek</span>
+                        <br>
+                        A Fartlek run alternates faster segments with recovery periods, but in a non-structured way based on how you feel. Fartleks work on speed with less monotony. A sample fartlek may push the pace for 2 minutes, jog for 1, surge again for 3, etc.
+                    </li>
+                    <li>
+                        <span class="dark-text underline yellow">Long Runs</span>
+                        <br>
+                        Long runs are 1.5-3+ hours at an easy, conversational pace. They build endurance and mental stamina needed for the marathon distance. Long runs typically make up 20-30% of weekly mileage.
+                    </li>
+                    <li>
+                        <span class="dark-text underline blue">Recovery Runs</span>
+                        <br>
+                        Recovery runs are short, slow runs usually done the day after a hard workout. They flush muscles, facilitate recovery, and prevent injury while adding mileage. Keep effort very easy on these runs.
+                    </li>
+                    <li>
+                        <span class="dark-text underline red">Tempo</span>
+                        <br>
+                        Tempo runs are steady, moderately-hard efforts run at lactate threshold pace. They build speed and efficiency at race pace. A sample tempo may be 3-5 miles at marathon pace or slightly faster.
+                    </li>
+                    <li>
+                        <span class="dark-text underline yellow">Progression Runs</span>
+                        <br>
+                        Progression runs start easy and gradually build to a faster pace throughout the run. They help improve stamina and get the body accustomed to holding faster paces. A sample progression run may be 6 miles starting at an aerobic pace and finishing at marathon pace.
+                    </li>
+                </ul>
+            </div>
+            <div class="panel__split panel__split--dark panel__text">
+                <div class="white-block">
+                    <h1>
+                        PACES
+                    </h1>
+                </div>
+                <p>
+                    I'm so excited you've decided to take control of your fitness journey and reach your goals.
+                </p>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Target Time
+                            </th>
+                            <th>
+                                Race Pace
+                            </th>
+                            <th>
+                                Easy
+                            </th>
+                            <th>
+                                Tempo
+                            </th>
+                            <th>
+                                Interval
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                2:50:00
+                            </td>
+                            <td>
+                                6:18
+                            </td>
+                            <td>
+                                7:50-8:30
+                            </td>
+                            <td>
+                                6:05-6:18
+                            </td>
+                            <td>
+                                5:50-6:05
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                2:55:00
+                            </td>
+                            <td>
+                                6:27
+                            </td>
+                            <td>
+                                8:00-8:40
+                            </td>
+                            <td>
+                                6:15-6:27
+                            </td>
+                            <td>
+                                6:00-6:15
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                3:00:00
+                            </td>
+                            <td>
+                                6:36
+                            </td>
+                            <td>
+                                8:10-8:50
+                            </td>
+                            <td>
+                                6:25-6:36
+                            </td>
+                            <td>
+                                6:10-6:25
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                3:05:00
+                            </td>
+                            <td>
+                                6:45
+                            </td>
+                            <td>
+                                8:20-9:00
+                            </td>
+                            <td>
+                                6:35-6:45
+                            </td>
+                            <td>
+                                6:20-6:35
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                3:10:00
+                            </td>
+                            <td>
+                                6:54
+                            </td>
+                            <td>
+                                8:30-9:10
+                            </td>
+                            <td>
+                                6:45-6:54
+                            </td>
+                            <td>
+                                6:30-6:45
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </body>
 </html>
